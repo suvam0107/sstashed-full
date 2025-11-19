@@ -1,0 +1,3 @@
+[submodule "sstashed"]
+	path = sstashed
+	url = https://github.com/suvam0107/sstashed
