@@ -24,7 +24,7 @@ const Cart = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+        <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-black"></div>
       </div>
     );
   }
@@ -38,7 +38,7 @@ const Cart = () => {
           <p className="text-gray-600 mb-6">Start shopping to add items to your cart</p>
           <Link
             to="/products"
-            className="inline-block bg-primary hover:bg-secondary text-white px-6 py-3 rounded-lg transition-colors"
+            className="inline-block bg-emerald-200 border-2 border-transparent text-gray-800 hover:bg-transparent hover:border-emerald-200 hover:text-emerald-400 h px-6 py-3 rounded-lg transition-colors duration-300"
           >
             Browse Products
           </Link>

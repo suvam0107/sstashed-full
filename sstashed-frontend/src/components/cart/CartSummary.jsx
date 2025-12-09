@@ -34,7 +34,7 @@ const CartSummary = ({ cart }) => {
       <button
         onClick={handleCheckout}
         disabled={cart.itemCount === 0}
-        className="w-full bg-primary hover:bg-secondary text-white font-semibold py-3 px-4 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full bg-red-500 text-white border-2 border-transparent hover:bg-transparent hover:text-red-500 hover:border-red-500 font-semibold py-3 px-4 rounded-lg transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
       >
         Proceed to Checkout
       </button>
