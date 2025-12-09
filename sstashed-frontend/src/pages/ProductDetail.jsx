@@ -6,6 +6,7 @@ import { useAuth } from '../context/AuthContext';
 import { useWishlist } from '../context/WishlistContext';
 import { formatCurrency } from '../utils/auth';
 import { FiShoppingCart, FiArrowLeft, FiHeart, FiTruck, FiShield, FiRefreshCw, FiMinus, FiPlus, FiCreditCard } from 'react-icons/fi';
+import { FaHeart } from 'react-icons/fa';
 import { toast } from 'react-hot-toast';
 
 const ProductDetail = () => {
@@ -35,6 +36,8 @@ const ProductDetail = () => {
       setLoading(false);
     }
   };
+
+  const inWishlist = product ? isInWishlist(product.id) : false;
 
   const handleWishlistToggle = async () => {
     if (!isAuthenticated) {
@@ -102,8 +105,6 @@ const ProductDetail = () => {
   }
 
   if (!product) return null;
-  
-  const inWishlist = isInWishlist(product.id);
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
@@ -150,15 +151,19 @@ const ProductDetail = () => {
                   </span>
                 )}
                 <button
-                  className="p-2 rounded-full hover:bg-red-50 text-rose-500 transition-colors"
+                  className={`p-3 rounded-full shadow-lg transition-all duration-300 ${
+                    inWishlist 
+                      ? 'bg-red-50 scale-110' 
+                      : 'bg-white hover:bg-red-50'
+                  }`}
                   onClick={handleWishlistToggle}
                   title={inWishlist ? 'Remove from wishlist' : 'Add to wishlist'}
                 >
-                  <FiHeart 
-                    size={24} 
-                    fill={inWishlist ? 'currentColor' : 'none'}
-                    className="transition-all"
-                  />
+                  {inWishlist ? (
+                    <FaHeart size={24} className="text-red-500" />
+                  ) : (
+                    <FiHeart size={24} className="text-red-500" />
+                  )}
                 </button>
               </div>
 
@@ -207,7 +212,7 @@ const ProductDetail = () => {
                     <button
                       onClick={decrementQuantity}
                       disabled={quantity <= 1}
-                      className="px-4 py-2 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                      className="px-4 py-2 hover:text-red-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                     >
                       <FiMinus />
                     </button>
@@ -217,7 +222,7 @@ const ProductDetail = () => {
                     <button
                       onClick={incrementQuantity}
                       disabled={quantity >= product.stockQuantity}
-                      className="px-4 py-2 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                      className="px-4 py-2 hover:text-emerald-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                     >
                       <FiPlus />
                     </button>

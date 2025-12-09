@@ -38,20 +38,26 @@ const CartItem = ({ item, onUpdateQuantity, onRemove }) => {
       </div>
 
       {/* Quantity Controls */}
-      <div className="flex items-center space-x-2">
-        <button
-          onClick={handleDecrease}
-          className="p-1 rounded-full hover:bg-gray-200 transition-colors"
-        >
-          <FiMinus size={16} />
-        </button>
-        <span className="w-8 text-center font-semibold">{item.quantity}</span>
-        <button
-          onClick={handleIncrease}
-          className="p-1 rounded-full hover:bg-gray-200 transition-colors"
-        >
-          <FiPlus size={16} />
-        </button>
+      <div className="flex items-center space-x-4">
+        <div className="flex items-center border-2 border-gray-300 rounded-lg">
+          <button
+            onClick={handleDecrease}
+            disabled={item.quantity == 1}
+            className="p-2 hover:text-red-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          >
+            <FiMinus />
+          </button>
+          <span className="px-4 py-2 font-bold text-md border-x-2 border-gray-300">
+            {item.quantity}
+          </span>
+          <button
+            onClick={handleIncrease}
+            disabled={item.quantity >= item.product.stockQuantity}
+            className="p-2 hover:text-emerald-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          >
+            <FiPlus />
+          </button>
+        </div>
       </div>
 
       {/* Subtotal */}

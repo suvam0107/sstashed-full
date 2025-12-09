@@ -2,7 +2,7 @@ import { useCart } from '../context/CartContext';
 import { Link } from 'react-router-dom';
 import CartItem from '../components/cart/CartItem';
 import CartSummary from '../components/cart/CartSummary';
-import { FiShoppingBag } from 'react-icons/fi';
+import { FiShoppingCart } from 'react-icons/fi';
 
 const Cart = () => {
   const { cart, loading, updateQuantity, removeItem, clearCart } = useCart();
@@ -25,20 +25,26 @@ const Cart = () => {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-black"></div>
+        <p className="text-gray-600 text-lg ml-2">Loading your cart...</p>
       </div>
     );
   }
 
   if (cart.items.length === 0) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="min-h-screen flex text-center items-center justify-center bg-gray-50">
         <div className="text-center">
-          <FiShoppingBag size={64} className="mx-auto text-gray-400 mb-4" />
+          <div className="mb-6 relative inline-block">
+            <FiShoppingCart fill='currentColor' size={80} className="text-emerald-100" />
+            <div className="absolute inset-0 flex items-center justify-center">
+              <FiShoppingCart size={64} className="text-emerald-500 animate-pulse" />
+            </div>
+          </div>
           <h2 className="text-2xl font-bold text-gray-800 mb-2">Your cart is empty</h2>
           <p className="text-gray-600 mb-6">Start shopping to add items to your cart</p>
           <Link
             to="/products"
-            className="inline-block bg-emerald-200 border-2 border-transparent text-gray-800 hover:bg-transparent hover:border-emerald-200 hover:text-emerald-400 h px-6 py-3 rounded-lg transition-colors duration-300"
+            className="inline-block text-gray-800 hover:text-emerald-400 hover:underline transition-colors duration-300"
           >
             Browse Products
           </Link>

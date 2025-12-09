@@ -6,6 +6,7 @@ import { profileAPI, orderAPI } from '../api/axios';
 import { formatCurrency } from '../utils/auth';
 import { toast } from 'react-hot-toast';
 import { FiMapPin, FiCreditCard, FiCheck, FiPlus } from 'react-icons/fi';
+import { getPaymentMethodName } from './../utils/helpers.jsx';
 
 const Checkout = () => {
   const navigate = useNavigate();
@@ -260,9 +261,7 @@ const Checkout = () => {
                           )}
                         </div>
                         <span className="font-semibold">
-                          {method === 'COD' ? 'Cash on Delivery' : 
-                           method === 'CARD' ? 'Credit/Debit Card' :
-                           method === 'UPI' ? 'UPI Payment' : 'Net Banking'}
+                          {getPaymentMethodName(method)}
                         </span>
                       </div>
                     </div>

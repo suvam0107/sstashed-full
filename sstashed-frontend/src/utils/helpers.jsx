@@ -1,9 +1,22 @@
-import { useContext } from 'react';
+import { FiClock, FiPackage, FiTruck, FiCheck, FiX } from 'react-icons/fi';
 
 // Status icons and colors helpers
 export const getStatusIcon = (status) => {
-  // Import icons inside the function or pass them as props
-  return status; // Return status for now, handle icons in component
+  switch (status) {
+    case 'PENDING':
+      return <FiClock className="text-yellow-500" size={20} />;
+    case 'CONFIRMED':
+    case 'PROCESSING':
+      return <FiPackage className="text-blue-500" size={20} />;
+    case 'SHIPPED':
+      return <FiTruck className="text-purple-500" size={20} />;
+    case 'DELIVERED':
+      return <FiCheck className="text-green-500" size={20} />;
+    case 'CANCELLED':
+      return <FiX className="text-red-500" size={20} />;
+    default:
+      return <FiClock className="text-gray-500" size={20} />;
+  }
 };
 
 export const getStatusColor = (status) => {

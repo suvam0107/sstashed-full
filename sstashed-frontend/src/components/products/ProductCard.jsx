@@ -12,6 +12,8 @@ const ProductCard = ({ product }) => {
   const { isAuthenticated } = useAuth();
   const { isInWishlist, toggleWishlist } = useWishlist();
   
+  const inWishlist = isInWishlist(product.id);
+
   const handleWishlistToggle = async (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -23,8 +25,6 @@ const ProductCard = ({ product }) => {
     
     await toggleWishlist(product.id);
   };
-  
-  const inWishlist = isInWishlist(product.id);
 
   const handleAddToCart = async (e) => {
     e.preventDefault();
@@ -78,17 +78,21 @@ const ProductCard = ({ product }) => {
 
           {/* Wishlist Button */}
           <button 
-            className={`absolute top-3 left-3 z-10 p-2 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 ${
-              inWishlist ? 'bg-red-50 text-rose-600 scale-105' : 'bg-white text-rose-500 hover:bg-red-50'
+            className={`absolute top-3 left-3 z-10 p-2 rounded-full shadow-lg transition-all duration-300 ${
+              inWishlist 
+                ? 'bg-red-50 scale-110' 
+                : 'bg-white opacity-0 group-hover:opacity-100 hover:bg-red-50'
             }`}
             onClick={handleWishlistToggle}
+            title={inWishlist ? 'Remove from wishlist' : 'Add to wishlist'}
           >
             {inWishlist ? (
-              <FaHeart size={20} />
+              <FaHeart size={20} className="text-red-500" />
             ) : (
-              <FiHeart size={20} />
+              <FiHeart size={20} className="text-red-500" />
             )}
           </button>
+
 
           {/* Quick View Overlay */}
           <div className="absolute hover:bg-black/50 inset-0 flex items-center justify-center">

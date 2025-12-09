@@ -1,17 +1,20 @@
+import { useState } from 'react';
 import { useWishlist } from '../context/WishlistContext';
 import { useCart } from '../context/CartContext';
 import { Link } from 'react-router-dom';
-import { formatCurrency } from '../utils/auth';
-import { FiHeart, FiShoppingCart, FiTrash2 } from 'react-icons/fi';
+import { FaHeart } from 'react-icons/fa';
 import { toast } from 'react-hot-toast';
+import WishlistItem from '../components/wishlist/WishlistItem';
+import WishlistSummary from '../components/wishlist/WishlistSummary';
 
 const Wishlist = () => {
   const { wishlist, loading, removeFromWishlist, clearWishlist } = useWishlist();
   const { addToCart } = useCart();
+  const [sortOrder, setSortOrder] = useState('newest');
 
   const handleAddToCart = async (productId) => {
     const result = await addToCart(productId, 1);
-    if (result.success){
+    if (result.success) {
       await removeFromWishlist(productId);
       toast.success('Product added to cart and removed from wishlist');
     }
@@ -27,24 +30,44 @@ const Wishlist = () => {
     }
   };
 
+  // Filter out any invalid wishlist items
+  const validWishlist = wishlist.filter(item => item && item.product);
+
+  // Sort wishlist items
+  const sortedWishlist = [...validWishlist].sort((a, b) => {
+    const dateA = new Date(a.addedAt || 0);
+    const dateB = new Date(b.addedAt || 0);
+    return sortOrder === 'newest' ? dateB - dateA : dateA - dateB;
+  });
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="inline-block animate-spin rounded-full h-16 w-16 border-b-4 border-primary"></div>
+        <div className="text-center">
+          <div className="inline-block animate-spin rounded-full h-16 w-16 border-b-4 border-primary mb-4"></div>
+          <p className="text-gray-600 text-lg">Loading your wishlist...</p>
+        </div>
       </div>
     );
   }
 
-  if (wishlist.length === 0) {
+  if (sortedWishlist.length === 0) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
         <div className="text-center">
-          <FiHeart size={64} className="mx-auto text-gray-400 mb-4" />
-          <h2 className="text-2xl font-bold text-gray-800 mb-2">Your wishlist is empty</h2>
-          <p className="text-gray-600 mb-6">Save your favorite items to buy them later</p>
+          <div className="mb-6 relative inline-block">
+            <FaHeart size={80} className="text-red-100" />
+            <div className="absolute inset-0 flex items-center justify-center">
+              <FaHeart size={64} className="text-red-400 animate-pulse" />
+            </div>
+          </div>
+          <h2 className="text-3xl font-bold text-gray-800 mb-3">Your wishlist is empty</h2>
+          <p className="text-gray-600 mb-8 text-lg">
+            Save your favorite items to buy them later
+          </p>
           <Link
             to="/products"
-            className="inline-block bg-primary hover:bg-secondary text-white px-6 py-3 rounded-lg transition-colors"
+            className="inline-block text-gray-800 hover:text-red-400 hover:underline transition-colors duration-300"
           >
             Browse Products
           </Link>
@@ -57,71 +80,39 @@ const Wishlist = () => {
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold">My Wishlist</h1>
-          <button
-            onClick={handleClearWishlist}
-            className="text-red-500 hover:text-red-700 font-semibold flex items-center space-x-2"
-          >
-            <FiTrash2 />
-            <span>Clear All</span>
-          </button>
+          <div>
+            <h1 className="text-4xl font-bold text-gray-900 mb-2">My Wishlist</h1>
+            <p className="text-gray-600">
+              {sortedWishlist.length} {sortedWishlist.length === 1 ? 'item' : 'items'} saved
+            </p>
+          </div>
+          <FaHeart size={48} className="text-red-500" />
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {wishlist.map((item) => (
-            <div key={item.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow">
-              <Link to={`/products/${item.product.id}`}>
-                <div className="relative h-64 bg-gray-200">
-                  {item.product.imageUrl ? (
-                    <img
-                      src={item.product.imageUrl}
-                      alt={item.product.name}
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center text-gray-400">
-                      <span className="text-8xl">🏺</span>
-                    </div>
-                  )}
-                </div>
-              </Link>
-
-              <div className="p-4">
-                <Link to={`/products/${item.product.id}`}>
-                  <h3 className="text-lg font-semibold text-gray-800 mb-2 line-clamp-2 hover:text-primary">
-                    {item.product.name}
-                  </h3>
-                </Link>
-
-                <p className="text-2xl font-bold text-primary mb-4">
-                  {formatCurrency(item.product.price)}
-                </p>
-
-                <div className="flex space-x-2">
-                  <button
-                    onClick={() => handleAddToCart(item.product.id)}
-                    disabled={item.product.stockQuantity === 0}
-                    className="flex-1 flex items-center justify-center space-x-2 bg-primary hover:bg-secondary text-white py-2 rounded-lg font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    <FiShoppingCart size={18} />
-                    <span>Add to Cart</span>
-                  </button>
-
-                  <button
-                    onClick={() => handleRemove(item.product.id)}
-                    className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-                    title="Remove from wishlist"
-                  >
-                    <FiTrash2 size={20} />
-                  </button>
-                </div>
-
-                {item.product.stockQuantity === 0 && (
-                  <p className="text-red-500 text-sm mt-2 text-center">Out of Stock</p>
-                )}
-              </div>
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+          {/* Wishlist Items */}
+          <div className="lg:col-span-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+              {sortedWishlist.map((item) => (
+                <WishlistItem
+                  key={item.id}
+                  item={item}
+                  onAddToCart={handleAddToCart}
+                  onRemove={handleRemove}
+                />
+              ))}
             </div>
-          ))}
+          </div>
+
+          {/* Wishlist Summary */}
+          <div className="lg:col-span-1">
+            <WishlistSummary
+              wishlist={sortedWishlist}
+              onClearAll={handleClearWishlist}
+              sortOrder={sortOrder}
+              onSortChange={setSortOrder}
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -129,3 +120,4 @@ const Wishlist = () => {
 };
 
 export default Wishlist;
+

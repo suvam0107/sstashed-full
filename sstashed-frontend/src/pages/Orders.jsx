@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import { orderAPI } from '../api/axios';
 import { formatCurrency, formatDateTime } from '../utils/auth';
-import { FiPackage, FiTruck, FiCheck, FiX, FiClock, FiChevronDown, FiChevronUp } from 'react-icons/fi';
+import { FiPackage, FiChevronDown, FiChevronUp } from 'react-icons/fi';
 import { toast } from 'react-hot-toast';
+import { getStatusColor, getStatusIcon } from '../utils/helpers.jsx';
+import { Link } from 'react-router-dom';
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
@@ -56,42 +58,6 @@ const Orders = () => {
     setExpandedOrder(expandedOrder === orderId ? null : orderId);
   };
 
-  const getStatusIcon = (status) => {
-    switch (status) {
-      case 'PENDING':
-        return <FiClock className="text-yellow-500" size={20} />;
-      case 'CONFIRMED':
-      case 'PROCESSING':
-        return <FiPackage className="text-blue-500" size={20} />;
-      case 'SHIPPED':
-        return <FiTruck className="text-purple-500" size={20} />;
-      case 'DELIVERED':
-        return <FiCheck className="text-green-500" size={20} />;
-      case 'CANCELLED':
-        return <FiX className="text-red-500" size={20} />;
-      default:
-        return <FiClock className="text-gray-500" size={20} />;
-    }
-  };
-
-  const getStatusColor = (status) => {
-    switch (status) {
-      case 'PENDING':
-        return 'bg-yellow-100 text-yellow-800';
-      case 'CONFIRMED':
-      case 'PROCESSING':
-        return 'bg-blue-100 text-blue-800';
-      case 'SHIPPED':
-        return 'bg-purple-100 text-purple-800';
-      case 'DELIVERED':
-        return 'bg-green-100 text-green-800';
-      case 'CANCELLED':
-        return 'bg-red-100 text-red-800';
-      default:
-        return 'bg-gray-100 text-gray-800';
-    }
-  };
-
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -115,24 +81,29 @@ const Orders = () => {
 
         {orders.length === 0 ? (
           <div className="bg-white rounded-xl shadow-lg p-12 text-center">
-            <FiPackage size={64} className="mx-auto text-gray-400 mb-4" />
+            <div className="mb-6 relative inline-block">
+              <FiPackage fill='currentColor' size={80} className="text-amber-100" />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <FiPackage size={64} className="text-amber-500 animate-pulse" />
+              </div>
+            </div>
             <h2 className="text-2xl font-bold text-gray-800 mb-2">No Orders Yet</h2>
             <p className="text-gray-600 mb-6">
               Start shopping to see your orders here
             </p>
-            <a
-              href="/products"
-              className="inline-block bg-primary hover:bg-secondary text-white px-8 py-3 rounded-lg transition-colors font-semibold"
+            <Link
+              to="/products"
+              className="inline-block text-gray-800 hover:text-amber-400 hover:underline transition-colors duration-300"
             >
               Browse Products
-            </a>
+            </Link>
           </div>
         ) : (
           <div className="space-y-4">
             {orders.map((order) => (
-              <div key={order.id} className="bg-white rounded-xl shadow-lg overflow-hidden">
+              <div key={order.id} className="bg-linear-to-r from-yellow-50/70 to-red-50/70 rounded-xl shadow-lg overflow-hidden">
                 {/* Order Header */}
-                <div className="p-6 bg-gradient-to-r from-primary/5 to-transparent">
+                <div className="p-6">
                   <div className="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
                     <div className="flex items-center space-x-4">
                       {getStatusIcon(order.status)}
@@ -234,7 +205,7 @@ const Orders = () => {
                 </div>
 
                 {/* Order Actions */}
-                <div className="px-6 py-4 bg-gray-50 border-t flex justify-end space-x-4">
+                <div className="px-6 py-4 border-t flex justify-end space-x-4">
                   {order.status === 'PENDING' || order.status === 'CONFIRMED' ? (
                     <button
                       onClick={() => handleCancelOrder(order.id)}
@@ -246,7 +217,7 @@ const Orders = () => {
                   
                   <button
                     onClick={() => toggleOrderDetails(order.id)}
-                    className="px-6 py-2 bg-primary hover:bg-secondary text-white rounded-lg font-semibold transition-colors"
+                    className="px-6 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-semibold transition-colors"
                   >
                     View Details
                   </button>

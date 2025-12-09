@@ -28,7 +28,12 @@ export const CartProvider = ({ children }) => {
       const response = await cartAPI.get();
       setCart(response.data);
     } catch (error) {
-      console.error('Error fetching cart:', error);
+      // Only log error if it's not a 404 (which is expected when not logged in)
+      if (error.response?.status !== 404) {
+        console.error('Error fetching cart:', error);
+      }
+      // Set empty cart on error
+      setCart({ items: [], total: 0, itemCount: 0 });
     } finally {
       setLoading(false);
     }

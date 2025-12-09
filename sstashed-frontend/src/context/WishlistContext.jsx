@@ -27,9 +27,14 @@ export const WishlistProvider = ({ children }) => {
     try {
       setLoading(true);
       const response = await wishlistAPI.getAll();
-      setWishlist(response.data);
+      // Filter out any invalid items with null products
+      const validItems = (response.data || []).filter(item => item && item.product);
+      setWishlist(validItems);
     } catch (error) {
-      console.error('Error fetching wishlist:', error);
+      if (error.response?.status !== 404) {
+        console.error('Error fetching wishlist:', error);
+      }
+      setWishlist([]);
     } finally {
       setLoading(false);
     }
@@ -75,9 +80,9 @@ export const WishlistProvider = ({ children }) => {
     if (targetId === null) return false;
 
     return wishlist.some((item) => {
-      if (!item) return false;
+      if (!item || !item.product) return false;
 
-      const wishlistProductId = normalizeId(item.product?.id);
+      const wishlistProductId = normalizeId(item.product.id);
       if (wishlistProductId !== null) {
         return wishlistProductId === targetId;
       }
