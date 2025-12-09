@@ -95,7 +95,7 @@ const ProductCard = ({ product }) => {
 
 
           {/* Quick View Overlay */}
-          <div className="absolute hover:bg-black/50 inset-0 flex items-center justify-center">
+          <div className="absolute group-hover:bg-black/50 inset-0 flex items-center justify-center">
             <span className="text-white font-semibold opacity-0 group-hover:opacity-100 hover:underline transition-opacity duration-300">
               View Details
             </span>
@@ -143,11 +143,7 @@ const ProductCard = ({ product }) => {
             <button
               onClick={handleAddToCart}
               disabled={product.stockQuantity === 0}
-              className={`p-3 rounded-full transition-all duration-300 ${
-                product.stockQuantity === 0
-                  ? 'bg-gray-300 cursor-not-allowed'
-                  : 'bg-primary hover:bg-secondary text-yellow-500 shadow-lg hover:shadow-xl transform hover:scale-110'
-              }`}
+              className='p-3 rounded-full transition-all duration-300 bg-blue-400 hover:bg-blue-500 text-white shadow-lg hover:shadow-xl transform hover:scale-110 disabled:cursor-not-allowed disabled:hover:bg-blue-400 disabled:opacity-50 disabled:scale-100'
               title={product.stockQuantity === 0 ? 'Out of Stock' : 'Add to Cart'}
             >
               <FiShoppingCart size={20} />

@@ -16,11 +16,13 @@ const Home = () => {
   const fetchData = async () => {
     try {
       const [productsRes, categoriesRes] = await Promise.all([
-        productAPI.getAll({ page: 0, size: 8 }),
+        productAPI.getAll({ page: 0, size: 20 }),
         categoryAPI.getAll(),
       ]);
+
+      const shuffledProducts = [...productsRes.data.content].sort(() => Math.random() - 0.5);
       
-      setFeaturedProducts(productsRes.data.content);
+      setFeaturedProducts(shuffledProducts.slice(0, 8));
       setCategories(categoriesRes.data);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -32,7 +34,7 @@ const Home = () => {
   return (
     <div className="min-h-screen overflow-hidden">
       {/* Hero Section */}
-      <section className="bg-linear-to-r from-green-100 to-orange-100 text-black py-20">
+      <section className="bg-linear-to-b from-green-100 to-green-50 text-black py-20">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-5xl font-bold mb-6">
             Discover Authentic Handcrafted Treasures
@@ -43,16 +45,16 @@ const Home = () => {
           </p>
           <Link
             to="/products"
-            className="inline-flex items-center space-x-2 bg-white text-primary px-8 py-3 rounded-lg font-semibold border-2 border-white hover:border-2 hover:border-green-500 hover:text-green-500 transition-all duration-300"
+            className="group inline-flex items-center space-x-2 text-black rounded-lg font-semibold hover:text-green-500 transition-color duration-300"
           >
             <span>Shop Now</span>
-            <FiArrowRight />
+            <FiArrowRight className='group-hover:translate-x-2 transition-transform duration-300' />
           </Link>
         </div>
       </section>
 
       {/* Categories Section */}
-      <section className="py-16 bg-linear-to-b from-yellow-50 to-white">
+      <section className="py-16 bg-linear-to-b from-green-50 to-orange-50">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-12">
             Shop by Category
@@ -97,7 +99,7 @@ const Home = () => {
       </section>
 
       {/* Featured Products Section */}
-      <section className="py-16">
+      <section className="py-16 bg-linear-to-b from-orange-50 to-purple-50">
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center mb-12">
             <h2 className="text-3xl font-bold">Featured Products</h2>
@@ -123,7 +125,7 @@ const Home = () => {
       </section>
 
       {/* What is SStashed Section */}
-      <section className="py-16 bg-linear-to-t from-purple-200 to-white text-black">
+      <section className="py-16 bg-linear-to-b from-purple-50 to-purple-200 text-black">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-12">
             What is SStashed?

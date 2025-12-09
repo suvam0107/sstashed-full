@@ -59,9 +59,10 @@ const Header = () => {
                 {/* Cart */}
                 <Link
                   to="/cart"
-                  className={`relative hover:text-emerald-500 rounded-full p-2 transition-colors ${
-                    isActive('/cart') ? 'bg-emerald-100 text-emerald-500' : ''
+                  className={`relative hover:text-blue-500 rounded-full p-2 transition-colors ${
+                    isActive('/cart') ? 'bg-blue-100 text-blue-500' : ''
                   }`}
+                  title="Cart"
                 >
                   <FiShoppingCart size={24} />
                   {cart.itemCount > 0 && (
@@ -100,7 +101,7 @@ const Header = () => {
                   </span>
                   <button
                     onClick={handleLogout}
-                    className="hover:text-blue-500 transition-colors"
+                    className="hover:text-gray-400 transition-colors"
                     title="Logout"
                   >
                     <FiLogOut size={24} />

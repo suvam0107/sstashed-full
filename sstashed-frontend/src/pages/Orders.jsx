@@ -1,15 +1,146 @@
 import { useEffect, useState } from 'react';
 import { orderAPI } from '../api/axios';
 import { formatCurrency, formatDateTime } from '../utils/auth';
-import { FiPackage, FiChevronDown, FiChevronUp } from 'react-icons/fi';
+import { FiPackage, FiChevronDown, FiChevronUp, FiX } from 'react-icons/fi';
 import { toast } from 'react-hot-toast';
 import { getStatusColor, getStatusIcon } from '../utils/helpers.jsx';
 import { Link } from 'react-router-dom';
+
+const BillModal = ({ order, onClose }) => {
+  if (!order) return null;
+
+  return (
+    <div 
+      className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4"
+      onClick={onClose}
+    >
+      <div 
+        className="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto scrollbar-hide"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Bill Header */}
+        <div className="bg-linear-to-r from-green-500 to-red-500 text-white p-6">
+          <div className="flex justify-between items-center">
+            <div>
+              <h2 className="text-2xl font-bold">SStashed</h2>
+              <p className="text-sm opacity-90">Order Invoice</p>
+            </div>
+            <button
+              onClick={onClose}
+              className="text-white hover:bg-white/50 rounded-full p-2 transition-colors"
+            >
+              <FiX size={24} />
+            </button>
+          </div>
+        </div>
+
+        {/* Bill Body */}
+        <div className="p-6">
+          {/* Order Details */}
+          <div className="grid grid-cols-2 gap-4 mb-6 pb-6 border-b">
+            <div>
+              <p className="text-sm text-gray-600">Order Number</p>
+              <p className="font-semibold">{order.orderNumber}</p>
+            </div>
+            <div>
+              <p className="text-sm text-gray-600">Order Date</p>
+              <p className="font-semibold">{formatDateTime(order.orderDate)}</p>
+            </div>
+            <div>
+              <p className="text-sm text-gray-600">Payment Method</p>
+              <p className="font-semibold">{order.paymentMethod}</p>
+            </div>
+            <div>
+              <p className="text-sm text-gray-600">Payment Status</p>
+              <p className={`font-semibold ${order.paymentStatus === 'PAID' ? 'text-green-600' : 'text-yellow-600'}`}>
+                {order.paymentStatus}
+              </p>
+            </div>
+          </div>
+
+          {/* Shipping Address */}
+          <div className="mb-6 pb-6 border-b">
+            <p className="text-sm text-gray-600 mb-2">Shipping Address</p>
+            <p className="font-semibold">
+              {order.shippingAddress}, {order.shippingCity}<br />
+              {order.shippingState} - {order.shippingPostalCode}<br />
+              {order.shippingCountry}
+            </p>
+          </div>
+
+          {/* Items Table */}
+          <div className="mb-2">
+            <h3 className="font-bold text-lg mb-4">Order Items</h3>
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="bg-gray-100 font-semibold text-sm text-center border-y">
+                    <th className='p-2'>Product ID</th>
+                    <th className='p-2'>Product Name</th>
+                    <th className='p-2'>Quantity</th>
+                    <th className='p-2'>Rate</th>
+                    <th className='p-2'>Amount</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {order.items && order.items.map((item) => (
+                    <tr key={item.id} className="text-sm text-center border-b">
+                      <td className="p-3">{item.product?.id || 'N/A'}</td>
+                      <td className="p-3 font-semibold">{item.productName}</td>
+                      <td className="p-3">{item.quantity}</td>
+                      <td className="p-3">{formatCurrency(item.price)}</td>
+                      <td className="p-3 font-semibold">{formatCurrency(item.subtotal)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* Bill Summary */}
+          <div className="bg-gray-50 rounded-lg p-4">
+            <div className="space-y-2">
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-600">Subtotal</span>
+                <span className="font-semibold">{formatCurrency(order.totalAmount)}</span>
+              </div>
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-600">GST (Included)</span>
+                <span className="font-semibold">{formatCurrency(0)}</span>
+              </div>
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-600">Delivery Charges</span>
+                <span className="font-semibold text-green-600">FREE</span>
+              </div>
+              <div className="border-t pt-2 mt-2">
+                <div className="flex justify-between">
+                  <span className="font-bold text-lg">Total Amount</span>
+                  <span className="font-bold text-2xl text-primary">{formatCurrency(order.totalAmount)}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Footer Note */}
+          <div className="mt-6 pt-6 border-t text-center">
+            <p className="text-sm text-gray-600">
+              Thank you for shopping with SStashed!
+            </p>
+            <p className="text-xs text-gray-500 mt-2">
+              For any queries, contact us at info@sstashed.com or +91 98310 58408
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [expandedOrder, setExpandedOrder] = useState(null);
+  const [selectedOrderForBill, setSelectedOrderForBill] = useState(null);
   const [pagination, setPagination] = useState({
     page: 0,
     size: 10,
@@ -101,7 +232,7 @@ const Orders = () => {
         ) : (
           <div className="space-y-4">
             {orders.map((order) => (
-              <div key={order.id} className="bg-linear-to-r from-yellow-50/70 to-red-50/70 rounded-xl shadow-lg overflow-hidden">
+              <div key={order.id} className="bg-white rounded-xl shadow-lg overflow-hidden">
                 {/* Order Header */}
                 <div className="p-6">
                   <div className="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
@@ -156,22 +287,22 @@ const Orders = () => {
                 <div className="border-t">
                   <button
                     onClick={() => toggleOrderDetails(order.id)}
-                    className="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors"
+                    className="group w-full px-6 py-4 flex items-center justify-between"
                   >
                     <span className="font-semibold text-gray-700">
                       {order.items?.length || 0} Item(s)
                     </span>
                     {expandedOrder === order.id ? (
-                      <FiChevronUp className="text-gray-600" size={20} />
+                      <FiChevronUp className="text-gray-600 group-hover:scale-120 transition-transform duration-300" size={20} />
                     ) : (
-                      <FiChevronDown className="text-gray-600" size={20} />
+                      <FiChevronDown className="text-gray-600 group-hover:scale-120 transition-transform duration-300" size={20} />
                     )}
                   </button>
 
                   {expandedOrder === order.id && order.items && (
                     <div className="px-6 pb-6 space-y-4">
                       {order.items.map((item) => (
-                        <div key={item.id} className="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg">
+                        <div key={item.id} className="flex items-center space-x-4 p-4 bg-gray-100 rounded-lg">
                           <div className="w-20 h-20 bg-gray-200 rounded shrink-0">
                             {item.product?.imageUrl ? (
                               <img
@@ -216,10 +347,10 @@ const Orders = () => {
                   ) : null}
                   
                   <button
-                    onClick={() => toggleOrderDetails(order.id)}
+                    onClick={() => setSelectedOrderForBill(order)}
                     className="px-6 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-semibold transition-colors"
                   >
-                    View Details
+                    View Bill
                   </button>
                 </div>
               </div>
@@ -248,6 +379,14 @@ const Orders = () => {
                   Next
                 </button>
               </div>
+            )}
+
+            {/* Bill Modal */}
+            {selectedOrderForBill && (
+              <BillModal 
+                order={selectedOrderForBill} 
+                onClose={() => setSelectedOrderForBill(null)} 
+              />
             )}
           </div>
         )}

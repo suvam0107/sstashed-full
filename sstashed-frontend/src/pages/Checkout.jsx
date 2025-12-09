@@ -131,7 +131,7 @@ const Checkout = () => {
                       value={newAddress.streetAddress}
                       onChange={(e) => setNewAddress({ ...newAddress, streetAddress: e.target.value })}
                       required
-                      className="px-4 py-2 border border-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+                      className="px-4 py-2 border border-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     />
                     <input
                       type="text"
@@ -139,7 +139,7 @@ const Checkout = () => {
                       value={newAddress.city}
                       onChange={(e) => setNewAddress({ ...newAddress, city: e.target.value })}
                       required
-                      className="px-4 py-2 border border-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+                      className="px-4 py-2 border border-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     />
                     <input
                       type="text"
@@ -147,7 +147,7 @@ const Checkout = () => {
                       value={newAddress.state}
                       onChange={(e) => setNewAddress({ ...newAddress, state: e.target.value })}
                       required
-                      className="px-4 py-2 border border-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+                      className="px-4 py-2 border border-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     />
                     <input
                       type="text"
@@ -155,13 +155,13 @@ const Checkout = () => {
                       value={newAddress.postalCode}
                       onChange={(e) => setNewAddress({ ...newAddress, postalCode: e.target.value })}
                       required
-                      className="px-4 py-2 border border-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+                      className="px-4 py-2 border border-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     />
                     <select
                       value={newAddress.addressType}
                       required
                       onChange={(e) => setNewAddress({ ...newAddress, addressType: e.target.value })}
-                      className={`px-2 py-2 border border-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent ${newAddress.addressType=='' ? 'text-gray-500' : 'text-black'} `}
+                      className={`px-2 py-2 border border-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${newAddress.addressType=='' ? 'text-gray-500' : 'text-black'} `}
                     >
                       <option value="" disabled hidden>Select Address Type</option>
                       <option value="HOME" className='text-black'>Home</option>
@@ -171,14 +171,14 @@ const Checkout = () => {
                     <div className="flex space-x-4 justify-center">
                       <button
                         type="submit"
-                        className="bg-emerald-100 text-emerald-500 px-6 py-2 rounded-lg hover:bg-emerald-200 transition-colors"
+                        className="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 font-semibold transition-colors"
                       >
                         Save Address
                       </button>
                       <button
                         type="button"
                         onClick={() => setShowAddressForm(false)}
-                        className="bg-red-100 text-red-500 px-6 py-2 rounded-lg hover:bg-red-200 transition-colors"
+                        className="bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600 font-semibold transition-colors"
                       >
                         Cancel
                       </button>

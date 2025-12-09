@@ -35,16 +35,16 @@ const Cart = () => {
       <div className="min-h-screen flex text-center items-center justify-center bg-gray-50">
         <div className="text-center">
           <div className="mb-6 relative inline-block">
-            <FiShoppingCart fill='currentColor' size={80} className="text-emerald-100" />
+            <FiShoppingCart fill='currentColor' size={80} className="text-blue-100" />
             <div className="absolute inset-0 flex items-center justify-center">
-              <FiShoppingCart size={64} className="text-emerald-500 animate-pulse" />
+              <FiShoppingCart size={64} className="text-blue-500 animate-pulse" />
             </div>
           </div>
           <h2 className="text-2xl font-bold text-gray-800 mb-2">Your cart is empty</h2>
           <p className="text-gray-600 mb-6">Start shopping to add items to your cart</p>
           <Link
             to="/products"
-            className="inline-block text-gray-800 hover:text-emerald-400 hover:underline transition-colors duration-300"
+            className="inline-block text-gray-800 hover:text-blue-400 hover:underline transition-colors duration-300"
           >
             Browse Products
           </Link>

@@ -1,7 +1,6 @@
-import { FiArrowDown, FiArrowUp } from 'react-icons/fi';
 import { formatCurrency } from '../../utils/auth';
 
-const WishlistSummary = ({ wishlist, onClearAll, sortOrder, onSortChange }) => {
+const WishlistSummary = ({ wishlist, onClearAll }) => {
   const totalValue = wishlist.reduce((sum, item) => {
     return sum + (item?.product?.price || 0);
   }, 0);
@@ -37,37 +36,6 @@ const WishlistSummary = ({ wishlist, onClearAll, sortOrder, onSortChange }) => {
               {formatCurrency(totalValue)}
             </span>
           </div>
-        </div>
-      </div>
-
-      {/* Sort Controls */}
-      <div className="mb-6 pb-6 border-b">
-        <label className="block text-sm font-semibold text-gray-700 mb-3">
-          Sort by Date Added
-        </label>
-        <div className="flex space-x-2">
-          <button
-            onClick={() => onSortChange('newest')}
-            className={`flex-1 flex items-center justify-center space-x-2 py-2 px-3 rounded-lg font-semibold transition-all duration-300 ${
-              sortOrder === 'newest'
-                ? 'bg-primary text-white shadow-md'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-            }`}
-          >
-            <FiArrowDown size={16} />
-            <span className="text-sm">Newest</span>
-          </button>
-          <button
-            onClick={() => onSortChange('oldest')}
-            className={`flex-1 flex items-center justify-center space-x-2 py-2 px-3 rounded-lg font-semibold transition-all duration-300 ${
-              sortOrder === 'oldest'
-                ? 'bg-primary text-white shadow-md'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-            }`}
-          >
-            <FiArrowUp size={16} />
-            <span className="text-sm">Oldest</span>
-          </button>
         </div>
       </div>
 

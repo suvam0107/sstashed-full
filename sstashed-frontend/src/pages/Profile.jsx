@@ -25,7 +25,7 @@ const Profile = () => {
     state: '',
     postalCode: '',
     country: 'India',
-    addressType: 'HOME',
+    addressType: '',
     isDefault: false,
   });
 
@@ -157,15 +157,15 @@ const Profile = () => {
             <div className="bg-white rounded-xl shadow-lg p-6">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-xl font-bold flex items-center space-x-2">
-                  <FiUser className="text-primary" />
+                  <FiUser />
                   <span>Profile Details</span>
                 </h2>
                 {!editingProfile && (
                   <button
                     onClick={() => setEditingProfile(true)}
-                    className="text-primary hover:text-secondary"
+                    className="rounded-full p-2 hover:bg-gray-200 transition-colors duration-300"
                   >
-                    <FiEdit2 size={20} />
+                    <FiEdit2 />
                   </button>
                 )}
               </div>
@@ -180,7 +180,7 @@ const Profile = () => {
                       type="text"
                       value={profileForm.firstName}
                       onChange={(e) => setProfileForm({ ...profileForm, firstName: e.target.value })}
-                      className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                      className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none focus:border-transparent"
                       required
                     />
                   </div>
@@ -193,7 +193,7 @@ const Profile = () => {
                       type="text"
                       value={profileForm.lastName}
                       onChange={(e) => setProfileForm({ ...profileForm, lastName: e.target.value })}
-                      className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                      className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none focus:border-transparent"
                       required
                     />
                   </div>
@@ -206,21 +206,21 @@ const Profile = () => {
                       type="tel"
                       value={profileForm.phone}
                       onChange={(e) => setProfileForm({ ...profileForm, phone: e.target.value })}
-                      className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                      className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none focus:border-transparent"
                     />
                   </div>
 
                   <div className="flex space-x-3">
                     <button
                       type="submit"
-                      className="flex-1 bg-primary hover:bg-secondary text-white py-2 rounded-lg font-semibold transition-colors"
+                      className="flex-1 bg-green-500 hover:bg-green-600 text-white py-2 rounded-lg font-semibold transition-colors"
                     >
                       Save
                     </button>
                     <button
                       type="button"
                       onClick={() => setEditingProfile(false)}
-                      className="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-700 py-2 rounded-lg font-semibold transition-colors"
+                      className="flex-1 bg-red-500 hover:bg-red-400 text-white py-2 rounded-lg font-semibold transition-colors"
                     >
                       Cancel
                     </button>
@@ -229,7 +229,7 @@ const Profile = () => {
               ) : (
                 <div className="space-y-4">
                   <div className="flex items-center space-x-3">
-                    <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
+                    <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center">
                       <span className="text-2xl font-bold text-primary">
                         {profile?.firstName?.[0]}{profile?.lastName?.[0]}
                       </span>
@@ -291,7 +291,7 @@ const Profile = () => {
               {(showAddressForm || editingAddress) && (
                 <form
                   onSubmit={editingAddress ? handleUpdateAddress : handleAddAddress}
-                  className="mb-6 p-4 bg-gray-50 rounded-lg"
+                  className="mb-6 p-4 bg-gray-50 border border-gray-400 rounded-lg"
                 >
                   <h3 className="font-semibold mb-4">
                     {editingAddress ? 'Edit Address' : 'Add New Address'}
@@ -304,7 +304,7 @@ const Profile = () => {
                         value={addressForm.streetAddress}
                         onChange={(e) => setAddressForm({ ...addressForm, streetAddress: e.target.value })}
                         required
-                        className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                        className="w-full px-4 py-2 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none focus:border-transparent"
                       />
                     </div>
                     <input
@@ -313,7 +313,7 @@ const Profile = () => {
                       value={addressForm.city}
                       onChange={(e) => setAddressForm({ ...addressForm, city: e.target.value })}
                       required
-                      className="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                      className="px-4 py-2 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none focus:border-transparent"
                     />
                     <input
                       type="text"
@@ -321,7 +321,7 @@ const Profile = () => {
                       value={addressForm.state}
                       onChange={(e) => setAddressForm({ ...addressForm, state: e.target.value })}
                       required
-                      className="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                      className="px-4 py-2 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none focus:border-transparent"
                     />
                     <input
                       type="text"
@@ -329,16 +329,18 @@ const Profile = () => {
                       value={addressForm.postalCode}
                       onChange={(e) => setAddressForm({ ...addressForm, postalCode: e.target.value })}
                       required
-                      className="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                      className="px-4 py-2 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none focus:border-transparent"
                     />
                     <select
                       value={addressForm.addressType}
                       onChange={(e) => setAddressForm({ ...addressForm, addressType: e.target.value })}
-                      className="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                      className={`px-4 py-2 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none focus:border-transparent
+                      ${addressForm.addressType=='' ? 'text-gray-500' : 'text-black'} `}
                     >
-                      <option value="HOME">Home</option>
-                      <option value="WORK">Work</option>
-                      <option value="OTHER">Other</option>
+                      <option value="" disabled hidden>Select Address Type</option>
+                      <option value="HOME" className='text-black'>Home</option>
+                      <option value="WORK" className='text-black'>Work</option>
+                      <option value="OTHER" className='text-black'>Other</option>
                     </select>
                   </div>
                   <div className="flex items-center space-x-2 mt-4">
@@ -347,7 +349,7 @@ const Profile = () => {
                       id="isDefault"
                       checked={addressForm.isDefault}
                       onChange={(e) => setAddressForm({ ...addressForm, isDefault: e.target.checked })}
-                      className="rounded text-primary focus:ring-primary"
+                      className="rounded text-primary focus:ring-blue-500 focus:outline-none"
                     />
                     <label htmlFor="isDefault" className="text-sm text-gray-700">
                       Set as default address
@@ -356,7 +358,7 @@ const Profile = () => {
                   <div className="flex space-x-3 mt-4">
                     <button
                       type="submit"
-                      className="bg-primary hover:bg-secondary text-white px-6 py-2 rounded-lg font-semibold transition-colors"
+                      className="flex-1 bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-lg font-semibold transition-colors"
                     >
                       {editingAddress ? 'Update' : 'Save'} Address
                     </button>
@@ -367,7 +369,7 @@ const Profile = () => {
                         setEditingAddress(null);
                         resetAddressForm();
                       }}
-                      className="bg-gray-300 hover:bg-gray-400 text-gray-700 px-6 py-2 rounded-lg font-semibold transition-colors"
+                      className="flex-1 bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-lg font-semibold transition-colors"
                     >
                       Cancel
                     </button>
@@ -385,7 +387,7 @@ const Profile = () => {
                   addresses.map((address) => (
                     <div
                       key={address.id}
-                      className="p-4 border-2 border-gray-200 rounded-lg hover:border-primary/30 transition-colors"
+                      className="p-4 border border-black rounded-lg hover:border-emerald-500 hover:bg-emerald-50 transition-colors"
                     >
                       <div className="flex justify-between items-start">
                         <div className="flex-1">
@@ -407,14 +409,14 @@ const Profile = () => {
                         <div className="flex space-x-2">
                           <button
                             onClick={() => startEditingAddress(address)}
-                            className="p-2 text-blue-500 hover:bg-blue-50 rounded-lg transition-colors"
+                            className="p-2 text-blue-500 hover:bg-blue-100 rounded-full transition-colors"
                             title="Edit"
                           >
                             <FiEdit2 size={18} />
                           </button>
                           <button
                             onClick={() => handleDeleteAddress(address.id)}
-                            className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                            className="p-2 text-red-500 hover:bg-red-100 rounded-full transition-colors"
                             title="Delete"
                           >
                             <FiTrash2 size={18} />

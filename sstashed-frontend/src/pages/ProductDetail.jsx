@@ -212,7 +212,7 @@ const ProductDetail = () => {
                     <button
                       onClick={decrementQuantity}
                       disabled={quantity <= 1}
-                      className="px-4 py-2 hover:text-red-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                      className="px-4 py-2 hover:text-red-500 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:text-gray-950 transition-colors"
                     >
                       <FiMinus />
                     </button>
@@ -222,7 +222,7 @@ const ProductDetail = () => {
                     <button
                       onClick={incrementQuantity}
                       disabled={quantity >= product.stockQuantity}
-                      className="px-4 py-2 hover:text-emerald-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                      className="px-4 py-2 hover:text-emerald-500 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:text-gray-950 transition-colors"
                     >
                       <FiPlus />
                     </button>
@@ -235,7 +235,7 @@ const ProductDetail = () => {
                 <button
                   onClick={handleAddToCart}
                   disabled={product.stockQuantity === 0}
-                  className="flex-1 flex items-center justify-center space-x-4 bg-white hover:bg-yellow-100 text-black py-4 rounded-xl font-semibold text-sm md:text-lg transition-colors duration-500 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
+                  className="flex-1 flex items-center justify-center space-x-4 bg-blue-500 hover:bg-blue-600 text-white py-4 rounded-xl font-semibold text-sm md:text-lg transition-colors duration-500 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-blue-500 shadow-lg"
                 >
                   <FiShoppingCart size={20} />
                   <span>Add to Cart</span>
@@ -244,7 +244,7 @@ const ProductDetail = () => {
                 <button
                   onClick={handleBuyNow}
                   disabled={product.stockQuantity === 0}
-                  className="flex-1 flex items-center justify-center space-x-4 bg-white hover:bg-green-100 text-black py-4 rounded-xl font-semibold text-sm md:text-lg transition-colors duration-500 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
+                  className="flex-1 flex items-center justify-center space-x-4 bg-red-500 hover:bg-red-600 text-white py-4 rounded-xl font-semibold text-sm md:text-lg transition-colors duration-500 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-red-500 shadow-lg"
                 >
                   <FiCreditCard size={20} />
                   <span>Buy Now</span>

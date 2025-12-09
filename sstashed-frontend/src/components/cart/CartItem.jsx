@@ -43,7 +43,7 @@ const CartItem = ({ item, onUpdateQuantity, onRemove }) => {
           <button
             onClick={handleDecrease}
             disabled={item.quantity == 1}
-            className="p-2 hover:text-red-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="p-2 hover:text-red-500 disabled:opacity-50 disabled:cursor-not-allowed disabled:text-gray-950 transition-colors"
           >
             <FiMinus />
           </button>
@@ -53,7 +53,7 @@ const CartItem = ({ item, onUpdateQuantity, onRemove }) => {
           <button
             onClick={handleIncrease}
             disabled={item.quantity >= item.product.stockQuantity}
-            className="p-2 hover:text-emerald-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="p-2 hover:text-emerald-500 disabled:opacity-50 disabled:cursor-not-allowed disabled:text-gray-950 transition-colors"
           >
             <FiPlus />
           </button>

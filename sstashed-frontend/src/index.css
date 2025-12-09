@@ -14,20 +14,12 @@ code {
     monospace;
 }
 
-/* Custom Slick Slider Styles */
-.slick-dots li button:before {
-  color: #8B4513 !important;
-}
-
-.slick-dots li.slick-active button:before {
-  color: #8B4513 !important;
-}
-
-.slick-prev:before,
-.slick-next:before {
-  display: none;
-}
-
-.slick-slider {
-  position: relative;
+@layer utilities {
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none; 
+  }
 }

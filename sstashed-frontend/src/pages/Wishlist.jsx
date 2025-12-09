@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useWishlist } from '../context/WishlistContext';
 import { useCart } from '../context/CartContext';
 import { Link } from 'react-router-dom';
@@ -10,7 +9,6 @@ import WishlistSummary from '../components/wishlist/WishlistSummary';
 const Wishlist = () => {
   const { wishlist, loading, removeFromWishlist, clearWishlist } = useWishlist();
   const { addToCart } = useCart();
-  const [sortOrder, setSortOrder] = useState('newest');
 
   const handleAddToCart = async (productId) => {
     const result = await addToCart(productId, 1);
@@ -33,13 +31,6 @@ const Wishlist = () => {
   // Filter out any invalid wishlist items
   const validWishlist = wishlist.filter(item => item && item.product);
 
-  // Sort wishlist items
-  const sortedWishlist = [...validWishlist].sort((a, b) => {
-    const dateA = new Date(a.addedAt || 0);
-    const dateB = new Date(b.addedAt || 0);
-    return sortOrder === 'newest' ? dateB - dateA : dateA - dateB;
-  });
-
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -51,7 +42,7 @@ const Wishlist = () => {
     );
   }
 
-  if (sortedWishlist.length === 0) {
+  if (validWishlist.length === 0) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
         <div className="text-center">
@@ -79,21 +70,18 @@ const Wishlist = () => {
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="container mx-auto px-4">
-        <div className="flex justify-between items-center mb-8">
-          <div>
-            <h1 className="text-4xl font-bold text-gray-900 mb-2">My Wishlist</h1>
-            <p className="text-gray-600">
-              {sortedWishlist.length} {sortedWishlist.length === 1 ? 'item' : 'items'} saved
-            </p>
+        <div className="flex items-center justify-between mb-8">
+          <h1 className="text-3xl font-bold">My Wishlist</h1>
+          <div className="text-gray-600">
+            Total Items: <span className="font-semibold text-primary">{validWishlist.length}</span>
           </div>
-          <FaHeart size={48} className="text-red-500" />
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Wishlist Items */}
           <div className="lg:col-span-3">
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
-              {sortedWishlist.map((item) => (
+              {validWishlist.map((item) => (
                 <WishlistItem
                   key={item.id}
                   item={item}
@@ -107,10 +95,8 @@ const Wishlist = () => {
           {/* Wishlist Summary */}
           <div className="lg:col-span-1">
             <WishlistSummary
-              wishlist={sortedWishlist}
+              wishlist={validWishlist}
               onClearAll={handleClearWishlist}
-              sortOrder={sortOrder}
-              onSortChange={setSortOrder}
             />
           </div>
         </div>
@@ -120,4 +106,3 @@ const Wishlist = () => {
 };
 
 export default Wishlist;
-
