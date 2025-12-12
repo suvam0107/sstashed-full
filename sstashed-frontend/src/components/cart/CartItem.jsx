@@ -1,5 +1,6 @@
 import { FiTrash2, FiPlus, FiMinus } from 'react-icons/fi';
 import { formatCurrency } from '../../utils/auth';
+import { Link } from 'react-router-dom';
 
 const CartItem = ({ item, onUpdateQuantity, onRemove }) => {
   const handleIncrease = () => {
@@ -33,7 +34,9 @@ const CartItem = ({ item, onUpdateQuantity, onRemove }) => {
 
       {/* Product Info */}
       <div className="flex-1">
-        <h3 className="font-semibold text-gray-800">{item.product.name}</h3>
+        <Link to={`/products/${item.product.id}`}>
+          <h3 className="font-semibold text-gray-800 hover:underline">{item.product.name}</h3>
+        </Link>
         <p className="text-sm text-gray-600">{formatCurrency(item.price)} each</p>
       </div>
 

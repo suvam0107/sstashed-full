@@ -318,7 +318,9 @@ const Orders = () => {
                           </div>
 
                           <div className="flex-1">
-                            <h4 className="font-semibold text-gray-800">{item.productName}</h4>
+                            <Link to={`/products/${item.product.id}`}>
+                              <h4 className="font-semibold text-gray-800 hover:underline">{item.productName}</h4>
+                            </Link>
                             <p className="text-sm text-gray-600">
                               Quantity: {item.quantity} × {formatCurrency(item.price)}
                             </p>
