@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { productAPI, categoryAPI } from '../api/axios';
 import ProductCard from '../components/products/ProductCard';
@@ -9,6 +9,8 @@ const Products = () => {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchInput, setSearchInput] = useState(searchParams.get('search') || '');
+  const searchTimeoutRef = useRef(null);
   const [pagination, setPagination] = useState({
     page: 0,
     size: 12,
@@ -85,6 +87,27 @@ const Products = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const handleSearchChange = (e) => {
+    const searchValue = e.target.value;
+    setSearchInput(searchValue);
+
+    // Clear previous timeout
+    if (searchTimeoutRef.current) {
+      clearTimeout(searchTimeoutRef.current);
+    }
+
+    // Set new timeout for debounced search
+    searchTimeoutRef.current = setTimeout(() => {
+      setFilters({ ...filters, search: searchValue, category: '' });
+      setPagination({ ...pagination, page: 0 });
+      if (searchValue) {
+        setSearchParams({ search: searchValue });
+      } else {
+        setSearchParams({});
+      }
+    }, 500); // 500ms delay
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="container mx-auto px-4">
@@ -97,6 +120,17 @@ const Products = () => {
               <div className="flex items-center space-x-2 mb-4">
                 <FiFilter />
                 <h2 className="text-lg font-semibold">Filters</h2>
+              </div>
+
+              {/* Search Bar */}
+              <div className="mb-6">
+                <input
+                  type="text"
+                  placeholder="Search products..."
+                  value={searchInput}
+                  onChange={handleSearchChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                />
               </div>
 
               {/* Categories Filter */}

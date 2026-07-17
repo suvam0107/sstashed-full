@@ -136,7 +136,7 @@ const Home = () => {
               <img 
                 src="../src/assets/logo.png" 
                 alt="SStashed Logo" 
-                className="w-48 h-48 md:w-64 md:h-64 mb-12 md:mb-0 md:hover:rotate-360 transition-transform duration-1000"
+                className="w-48 h-48 md:w-64 md:h-64 mb-12 md:mb-0 md:hover:scale-105 transition-transform duration-800"
               />
             </div>
             <div className="md:w-3/5 text-center md:text-left mb-8 md:mb-0 md:pr-12">
@@ -159,7 +159,7 @@ const Home = () => {
           </h2>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="text-center">
+            <div className="p-4 text-center rounded-lg hover:scale-105 hover:shadow-xl hover:shadow-slate-500 transition-all duration-300">
               <FiStar size={34} className='mx-auto text-amber-400'/>
               <h3 className="text-xl font-semibold mb-2">Authentic Craftsmanship</h3>
               <p className="text-accent">
@@ -167,7 +167,7 @@ const Home = () => {
               </p>
             </div>
             
-            <div className="text-center">
+            <div className="p-4 text-center rounded-lg hover:scale-105 hover:shadow-xl hover:shadow-slate-500 transition-all duration-300">
               <FiUsers size={34} className='mx-auto text-green-500'/>
               <h3 className="text-xl font-semibold mb-2">Fair Trade</h3>
               <p className="text-accent">
@@ -175,7 +175,7 @@ const Home = () => {
               </p>
             </div>
             
-            <div className="text-center">
+            <div className="p-4 text-center rounded-lg hover:scale-105 hover:shadow-xl hover:shadow-slate-500 transition-all duration-300">
               <FiGlobe size={34} className='mx-auto text-blue-400'/>
               <h3 className="text-xl font-semibold mb-2">Sustainable</h3>
               <p className="text-accent">
